@@ -21,9 +21,6 @@ try {
     const isExistingUser = await prisma.user.findUnique({
         where:{
             email:email
-        },
-        select:{
-            password:true   // to get only the password
         }
     })
 
@@ -48,7 +45,6 @@ try {
    return NextResponse.json({message:"New user has been created"},{status:201});
 }
 catch(err:any){
-
     return NextResponse.json({message: err.message},{status:500})
     console.log(err);
 }

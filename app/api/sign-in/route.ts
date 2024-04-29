@@ -37,7 +37,6 @@ const jwt_token = await jwt.sign(
 const response = NextResponse.json({message:"Logined successfully"},{status:200});
 
 response.cookies.set('JWT_TOKEN',jwt_token,{httpOnly:true}); // httpOnly for security purpose
-console.log("sdfsdf");
 return response;
 
 // jwt logic

@@ -15,12 +15,12 @@ const getUser = await prisma.user.findUnique({
     }
 })
 if(!getUser){
-    return NextResponse.json({message:"User does not exist"},{status:404});
+    return NextResponse.json({error:"User does not exist"},{status:404});
 }
 
 const isEqualPassword = await bcrypt.compare(password,getUser.password);
 if(!isEqualPassword){
-    return NextResponse.json({message:"Password is incorrect"},{status:409})
+    return NextResponse.json({error:"Password is incorrect"},{status:409})
 }
 
 
@@ -37,7 +37,7 @@ const jwt_token = await jwt.sign(
 const response = NextResponse.json({message:"Logined successfully"},{status:200});
 
 response.cookies.set('JWT_TOKEN',jwt_token,{httpOnly:true}); // httpOnly for security purpose
-
+console.log("sdfsdf");
 return response;
 
 // jwt logic

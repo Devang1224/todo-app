@@ -3,7 +3,8 @@
 import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from '@/components/ui/loader/Loader';
 import Link from 'next/link';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const SignInForm = () => {
@@ -16,17 +17,32 @@ const SignInForm = () => {
     getValues,
   } = useForm()
   
+  const [signInError,setSignInError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const onSubmit = (data:any)=>{
+
+  const onSubmit = async (data:any)=>{
 
    try{
 
-    const res = fetch("/api/verify_token",{
-     method:"GET"
-    }).then((data)=>data.json()).then((data)=>console.log(data))
+    const res = await fetch("/api/sign-in",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify(data)
+    })
 
+   const body = await res.json();
+
+  if(!res.ok){
+    setSignInError(body.error)
+    return;
+  }
+  
     reset();
-  }catch(err){
+    router.replace("/");
+    setSignInError(null);
+  
+  }catch(err:any){
     console.log(err);
    }
 
@@ -73,7 +89,8 @@ const SignInForm = () => {
        }
          
       </form>
-
+         
+      {signInError && <p className='p-2 text-[red]'>{signInError}</p>}
 
       <p className='text-[14px]'>
         Don't have an account?

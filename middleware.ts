@@ -4,16 +4,24 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(req:NextRequest){
 
     const user_token = req.cookies.get("JWT_TOKEN")?.value || "";
-    
+    const path = req.nextUrl.pathname;
+    const publicPaths = path=="/sign-in" || path=="/sign-up";
+
+
     const verifiedUser =
       user_token &&
       (await verfiyToken(user_token).catch((err) => {
         console.log(err);
       }));
-  
-   if(!verifiedUser){
-    return NextResponse.redirect(new URL("/sign-up",req.url))
-  }
+
+    
+if(publicPaths && verifiedUser){
+  return NextResponse.redirect(new URL("/",req.url))
+}
+
+if(!publicPaths && !verifiedUser){
+  return NextResponse.redirect(new URL("/sign-in",req.url));
+}
 
 
 }

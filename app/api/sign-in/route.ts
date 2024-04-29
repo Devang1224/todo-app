@@ -44,7 +44,9 @@ return response;
 
 }
 catch(err){
+
     console.log(err);
+    return NextResponse.json({message:"Error while processing try again",status:500});
 }
 
 }

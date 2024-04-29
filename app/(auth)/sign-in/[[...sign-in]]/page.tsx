@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from '@/components/ui/loader/Loader';
+import Link from 'next/link';
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -16,10 +17,20 @@ const SignInForm = () => {
   } = useForm()
   
 
-  const onSubmit = async(data:any)=>{
+  const onSubmit = (data:any)=>{
 
-console.log(data);
-reset()
+   try{
+
+    const res = fetch("/api/verify_token",{
+     method:"GET"
+    }).then((data)=>data.json()).then((data)=>console.log(data))
+
+    reset();
+  }catch(err){
+    console.log(err);
+   }
+
+  
   }
   
   return (
@@ -42,10 +53,6 @@ reset()
          {
           ...register("password",{
             required:"Password is required",
-            minLength:{
-              value:10,
-              message:"Password must be at least 10 characters"
-            }
           })
          }
          />
@@ -68,7 +75,10 @@ reset()
       </form>
 
 
-   
+      <p className='text-[14px]'>
+        Don't have an account?
+        <Link href={'/sign-up'} className=' text-blue-500 underline'> Sign up</Link>
+      </p>
     </div>
   )
 }

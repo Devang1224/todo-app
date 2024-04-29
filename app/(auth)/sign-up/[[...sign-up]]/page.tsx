@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { LoadingSpinner } from '@/components/ui/loader/Loader';
+import Link from 'next/link';
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -26,12 +27,12 @@ try{
         },
         body:JSON.stringify(data)
     })
+    reset();
+    console.log(res);
 }catch(err:any){
     console.log(err.message);
 }
 
-console.log(data);
-reset()
 
 }
   
@@ -103,7 +104,12 @@ reset()
        }
          
       </form>
-   
+      
+      <p className='text-[14px]'>
+        Already have an account?
+        <Link href={'/sign-in'} className=' text-blue-500 underline'> Sign in</Link>
+      </p>
+
     </div>
   )
 }
